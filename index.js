@@ -1,6 +1,9 @@
 // housekeeping 
 const inquirer = require('inquirer');
 const fs = require('fs');
+// from the shapes.test.js file
+const { Square, Triangle, Circle } = require('./lib/shapes');
+// questions for inquirer prompt 
 const questions = [
     {
         type: 'list',
@@ -33,18 +36,25 @@ const questions = [
 // prompt the user for the shape they want to create
 inquirer.createPromptModule()(questions).then((answers) => {
     console.log(answers);
+    let shape;
+    switch(answers.shape) {
+        case 'square':
+            shape = new Square();
+            break;
+        case 'circle':
+            shape = new Circle();
+            break;
+        case 'triangle':
+            shape = new Triangle();
+            break;
+    }
+    // set the color of the shape
+    shape.setColor(answers.backgroundColor);
+    // generate svg file 
+    const scg = shape.render();
+    // save svg file
+    fs.writeFile('design.svg', svg, (err) => {
+        if (err) throw err;
+        console.log('The file has been saved!');
+    });
 });
-//define baase shape class with common properties and methods
-// class Shape {
-//     constructor(name, text, textColor, backgroundColor, Shape) {
-//         this.name = name;
-//         this.text = text;
-//         this.textColor = textColor;
-//         this.backgroundColor = backgroundColor;
-//         this.Shape = Shape;
-//     }
-// }
-// define subclasses for each type of shape that extend the shape class
-// generate the design based on the user input
-
-// save the design to a file
