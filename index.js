@@ -1,6 +1,8 @@
 // housekeeping 
 const inquirer = require('inquirer');
 const fs = require('fs');
+const SVG = require('./lib/svg');
+const { Square, Triangle, Circle } = require('./lib/shapes');
 // questions for inquirer prompt 
 const questions = [
     {
@@ -30,32 +32,18 @@ const questions = [
         message: 'What color do you want the border to be?',
         name: 'borderColor',
     },
+    {
+        type: 'list',
+        message: 'What size do you want the shape to be?',
+        choices: [`${small}`, `${medium}`, `${large}`],
+        name: 'size',
+    },
 ]
+// if user chooses small make the size 100x100, medium 200x200, large 300x300
 
 // shapes class
-class Shape{
-    constructor(){
-        this.color = 'green';
-    }
-    setColor(color){
-        this.color = color;
-    }
-}
-class Circle extends Shape{
-    render(){
-        return `<circle cx="150" cy="100" r="80" fill="${this.color}" />`;
-    }
-}
-class Square extends Shape{
-    render(){
-        return `<rect x="90" y="40" width="120" height="120" fill="${this.color}" />`;
-    }
-}
-class Triangle extends Shape{
-    render(){
-        return `<polygon points="150, 18 244, 182 56, 182" fill="${this.color}" />`;
-    }
-}
+
+// svg container
 
 // prompt the user for the shape they want to create
 inquirer.createPromptModule()(questions).then((answers) => {
@@ -72,12 +60,35 @@ inquirer.createPromptModule()(questions).then((answers) => {
             shape = new Triangle();
             break;
     }
-    // set the color of the shape
     shape.setColor(answers.backgroundColor);
-    // generate svg file 
-    const svg = shape.render();
+     if (size === small){
+            width: 100,
+            height: 100,
+        } else if (size === medium){
+            width: 200,
+            height: 200,
+        } else if (size === large){
+            width: 300,
+            height: 300,
+        } else{
+            console.log('Please choose a size.');
+        }
+    // save object
+    const svgObj = new SVG();
+    svgObj.setShape(shape);
+    svgObj.setText(answers.text, answers.textColor);
+    svgObj.setBackgroundColor(answers.backgroundColor);
+    svgObj.setBorderColor(answers.borderColor);
+    svgObj.setSize(answers.size);
+    const svgString = svgObj.render();
     // save svg file
-    fs.writeFile('design.svg', svg, (err) => {
+    const svgDirectory = './examples';
+    if (!fs.existsSync(svgDirectory)){
+        fs.mkdirSync(svgDirectory);
+    } else{
+        console.log('Directory doesnt exists.');
+    }
+    fs.writeFile(`${svgDirectory}/design.svg`, svgString, (err) => {
         if (err) throw err;
         console.log('The file has been saved!');
     });
