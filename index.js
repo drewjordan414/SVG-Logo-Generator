@@ -26,11 +26,6 @@ const questions = [
         name: 'backgroundColor',
     },
     {
-        type: 'input',
-        message: 'What color do you want the border to be?',
-        name: 'borderColor',
-    },
-    {
         type: 'list',
         message: 'What size do you want the shape to be?',
         choices: ['small', 'medium', 'large'],
@@ -75,8 +70,9 @@ inquirer.createPromptModule()(questions).then((answers) => {
 
     const svgObj = new SVG();
     svgObj.setShape(shape);
-    svgObj.setText(answers.text, answers.textColor);
+    svgObj.setText(answers.text, answers.textColor, answers.backgroundColor);
     svgObj.setSize(width, height);
+    // svgObj.setTextColor(answers.backgroundColor);
 
     const svgString = svgObj.render();
     const svgDirectory = './examples';
