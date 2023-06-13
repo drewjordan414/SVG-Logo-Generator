@@ -51,7 +51,7 @@ inquirer.createPromptModule()(questions).then((answers) => {
             shape = new Triangle();
             break;
     }
-    shape.setColor(answers.backgroundColor);
+    // shape.setColor(answers.backgroundColor);
 
     let width, height;
     switch(answers.size) {
@@ -71,7 +71,7 @@ inquirer.createPromptModule()(questions).then((answers) => {
             console.log('Invalid size');
             return;
     }
-    shape.setSize(width, height)
+    // shape.setSize(width, height)
 
     const svgObj = new SVG();
     svgObj.setShape(shape);
