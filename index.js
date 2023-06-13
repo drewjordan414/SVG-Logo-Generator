@@ -1,9 +1,8 @@
-// housekeeping 
 const inquirer = require('inquirer');
 const fs = require('fs');
 const SVG = require('./lib/svg');
 const { Square, Triangle, Circle } = require('./lib/shapes');
-// questions for inquirer prompt 
+
 const questions = [
     {
         type: 'list',
@@ -14,7 +13,6 @@ const questions = [
     {
         type: 'input',
         message: 'What is the text you want to display? (3 characters max)',
-        // upper and lowercase condtions 
         name: 'text',
     },
     {
@@ -35,19 +33,12 @@ const questions = [
     {
         type: 'list',
         message: 'What size do you want the shape to be?',
-        choices: [`${small}`, `${medium}`, `${large}`],
+        choices: ['small', 'medium', 'large'],
         name: 'size',
     },
-]
-// if user chooses small make the size 100x100, medium 200x200, large 300x300
+];
 
-// shapes class
-
-// svg container
-
-// prompt the user for the shape they want to create
 inquirer.createPromptModule()(questions).then((answers) => {
-    console.log(answers);
     let shape;
     switch(answers.shape) {
         case 'square':
@@ -61,33 +52,40 @@ inquirer.createPromptModule()(questions).then((answers) => {
             break;
     }
     shape.setColor(answers.backgroundColor);
-     if (size === small){
-            width: 100,
-            height: 100,
-        } else if (size === medium){
-            width: 200,
-            height: 200,
-        } else if (size === large){
-            width: 300,
-            height: 300,
-        } else{
-            console.log('Please choose a size.');
-        }
-    // save object
+
+    let width, height;
+    switch(answers.size) {
+        case 'small':
+            width = 100;
+            height = 100;
+            break;
+        case 'medium':
+            width = 200;
+            height = 200;
+            break;
+        case 'large':
+            width = 300;
+            height = 300;
+            break;
+        default:
+            console.log('Invalid size');
+            return;
+    }
+
     const svgObj = new SVG();
     svgObj.setShape(shape);
     svgObj.setText(answers.text, answers.textColor);
-    svgObj.setBackgroundColor(answers.backgroundColor);
-    svgObj.setBorderColor(answers.borderColor);
-    svgObj.setSize(answers.size);
+    svgObj.setSize(width, height);
+
     const svgString = svgObj.render();
-    // save svg file
     const svgDirectory = './examples';
-    if (!fs.existsSync(svgDirectory)){
+
+    if (!fs.existsSync(svgDirectory)) {
         fs.mkdirSync(svgDirectory);
-    } else{
-        console.log('Directory doesnt exists.');
+    } else {
+        console.log('Directory exists.');
     }
+
     fs.writeFile(`${svgDirectory}/design.svg`, svgString, (err) => {
         if (err) throw err;
         console.log('The file has been saved!');
