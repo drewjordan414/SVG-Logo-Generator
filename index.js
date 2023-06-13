@@ -71,6 +71,7 @@ inquirer.createPromptModule()(questions).then((answers) => {
             console.log('Invalid size');
             return;
     }
+    shape.setSize(width, height)
 
     const svgObj = new SVG();
     svgObj.setShape(shape);
