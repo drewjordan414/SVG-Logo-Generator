@@ -21,8 +21,9 @@ const questions = [
         name: 'textColor',
     },
     {
-        type: 'input',
+        type: 'list',
         message: 'What color do you want the background to be?',
+        choices: ['green', 'blue', 'bisque', 'dodgerblue', 'purple', 'red'],
         name: 'backgroundColor',
     },
     {
