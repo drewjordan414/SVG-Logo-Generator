@@ -41,13 +41,11 @@ inquirer.createPromptModule()(questions).then((answers) => {
             shape = new Triangle();
             break;
     }
-    // shape.setColor(answers.backgroundColor);
-
-    // shape.setSize(width, height)
 
     const svgObj = new SVG();
-    svgObj.setShape(shape);
-    svgObj.setText(answers.text, answers.textColor, answers.backgroundColor);
+    svgObj.setShape(shape, answers.backgroundColor);
+    svgObj.setText(answers.text, answers.textColor,);
+    // svgObj.setBackGroundColor(answers.backgroundColor);
     // svgObj.setSize(width, height);
     // svgObj.setTextColor(answers.backgroundColor);
 
