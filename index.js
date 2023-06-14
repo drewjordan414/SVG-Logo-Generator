@@ -25,13 +25,7 @@ const questions = [
         message: 'What color do you want the background to be?',
         choices: ['green', 'blue', 'bisque', 'dodgerblue', 'purple', 'red'],
         name: 'backgroundColor',
-    },
-    {
-        type: 'list',
-        message: 'What size do you want the shape to be?',
-        choices: ['small', 'medium', 'large'],
-        name: 'size',
-    },
+    }
 ];
 
 inquirer.createPromptModule()(questions).then((answers) => {
@@ -49,30 +43,12 @@ inquirer.createPromptModule()(questions).then((answers) => {
     }
     // shape.setColor(answers.backgroundColor);
 
-    let width, height;
-    switch(answers.size) {
-        case 'small':
-            width = 100;
-            height = 100;
-            break;
-        case 'medium':
-            width = 200;
-            height = 200;
-            break;
-        case 'large':
-            width = 300;
-            height = 300;
-            break;
-        default:
-            console.log('Invalid size');
-            return;
-    }
     // shape.setSize(width, height)
 
     const svgObj = new SVG();
     svgObj.setShape(shape);
     svgObj.setText(answers.text, answers.textColor, answers.backgroundColor);
-    svgObj.setSize(width, height);
+    // svgObj.setSize(width, height);
     // svgObj.setTextColor(answers.backgroundColor);
 
     const svgString = svgObj.render();
